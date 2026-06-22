@@ -5,6 +5,7 @@ import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.markuputils.ExtentColor;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.crustq.base.BaseTest;
+import com.crustq.base.MultiDriverBaseTest;
 import com.crustq.config.ConfigReader;
 import com.crustq.reporting.ExecutionEnvironment;
 import com.crustq.reporting.ExecutionMetrics;
@@ -88,8 +89,12 @@ public class TestListener implements ITestListener, ISuiteListener {
         assignScenarioCategories(extentTest, result, scenario);
         assignBrowserMetadata(extentTest);
         logScenarioMetadata(extentTest, scenario);
+        logTestData(extentTest, result);
 
         String threadLabel = BaseTest.getThreadLabel();
+        if (threadLabel == null) {
+            threadLabel = MultiDriverBaseTest.getThreadLabel();
+        }
         if (threadLabel != null) {
             extentTest.info("Thread: " + threadLabel);
         }
@@ -136,6 +141,21 @@ public class TestListener implements ITestListener, ISuiteListener {
         extentTest.info("Expected Result: " + scenario.getExpectedResult());
     }
 
+    private void logTestData(ExtentTest extentTest, ITestResult result) {
+        Object[] parameters = result.getParameters();
+        if (parameters == null || parameters.length == 0) {
+            return;
+        }
+
+        if (parameters.length >= 3 && parameters[0] instanceof String scenario) {
+            extentTest.info("Test Data — Scenario: " + scenario);
+            extentTest.info("Test Data — Email: "
+                    + (parameters[1] == null || parameters[1].toString().isBlank() ? "<blank>" : parameters[1]));
+            extentTest.info("Test Data — Password: "
+                    + (parameters[2] == null || parameters[2].toString().isBlank() ? "<blank>" : "<provided>"));
+        }
+    }
+
     private void assignBrowserMetadata(ExtentTest extentTest) {
         ExecutionEnvironment env = ExecutionEnvironment.fromConfig();
         extentTest.assignDevice(env.getTargetDeviceName() + " | " + env.getOsVersion());
@@ -173,6 +193,9 @@ public class TestListener implements ITestListener, ISuiteListener {
 
     private void attachScreenshot(ITestResult result, ExtentTest extentTest, String status) {
         WebDriver driver = BaseTest.getThreadLocalDriver();
+        if (driver == null) {
+            driver = MultiDriverBaseTest.getThreadLocalWebDriver();
+        }
         if (driver == null) {
             extentTest.warning("Screenshot not captured (" + status + "): WebDriver was null");
             return;

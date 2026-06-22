@@ -2,75 +2,72 @@ package com.crustq.base;
 
 import com.crustq.config.ApplicationRole;
 import com.crustq.config.ConfigReader;
-import com.crustq.utils.BrowserFactory;
+import com.crustq.config.PlatformType;
+import com.crustq.utils.MobileGesturesUtil;
+import com.crustq.utils.WebActionsUtil;
 import com.crustq.utils.WebElementUtils;
+import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
-import java.time.Duration;
-
 /**
- * Thread-safe Chrome lifecycle for parallel TestNG execution.
- * Each @Test or DataProvider row gets its own Chrome instance via ThreadLocal.
+ * Single-platform test base.
+ * <ul>
+ *   <li>{@code platform.active=pwa} → Selenium WebDriver (Chrome)</li>
+ *   <li>{@code platform.active=android|ios} → AppiumDriver</li>
+ * </ul>
+ * Each {@code @Test} gets its own isolated driver via {@link DriverContext}.
  */
 public abstract class BaseTest {
-
-    protected static final ThreadLocal<WebDriver> DRIVER = new ThreadLocal<>();
-    protected static final ThreadLocal<WebElementUtils> UTILS = new ThreadLocal<>();
-    protected static final ThreadLocal<String> THREAD_LABEL = new ThreadLocal<>();
 
     @BeforeMethod(alwaysRun = true)
     public void setUp() {
         ConfigReader.init();
+        PlatformType platform = ConfigReader.getActivePlatform();
 
-        String threadLabel = "Chrome-Thread-" + Thread.currentThread().threadId();
-        THREAD_LABEL.set(threadLabel);
-
-        WebDriver driver = BrowserFactory.createChromeDriver();
-        configureDriver(driver);
-
-        DRIVER.set(driver);
-        UTILS.set(new WebElementUtils(driver));
+        DriverContext.bindThreadLabel(buildThreadLabel(platform));
+        DriverContext.startSinglePlatformSession(platform);
     }
 
     @AfterMethod(alwaysRun = true)
     public void tearDown() {
-        WebDriver driver = DRIVER.get();
-        if (driver != null) {
-            try {
-                driver.quit();
-            } catch (Exception ignored) {
-                // Session may already be closed after a failure
-            }
-        }
-        DRIVER.remove();
-        UTILS.remove();
-        THREAD_LABEL.remove();
+        DriverContext.stopSession();
     }
 
     public static WebDriver getThreadLocalDriver() {
-        return DRIVER.get();
+        return DriverContext.getWebDriverOrNull();
     }
 
     public static String getThreadLabel() {
-        return THREAD_LABEL.get();
+        return DriverContext.getThreadLabel();
     }
 
+    /**
+     * Returns WebDriver for PWA tests. Use {@link #getAppiumDriver()} when {@code platform.active} is mobile.
+     */
     protected WebDriver getDriver() {
-        WebDriver driver = DRIVER.get();
-        if (driver == null) {
-            throw new IllegalStateException("WebDriver is not initialized for the current thread");
-        }
-        return driver;
+        return DriverContext.getWebDriver();
+    }
+
+    protected AppiumDriver getAppiumDriver() {
+        return DriverContext.getAppiumDriver();
     }
 
     protected WebElementUtils getUtils() {
-        WebElementUtils utils = UTILS.get();
-        if (utils == null) {
-            throw new IllegalStateException("WebElementUtils is not initialized for the current thread");
-        }
-        return utils;
+        return DriverContext.getWebUtils();
+    }
+
+    protected WebActionsUtil getWebActions() {
+        return new WebActionsUtil(getDriver());
+    }
+
+    protected MobileGesturesUtil getMobileGestures() {
+        return DriverContext.getMobileGestures();
+    }
+
+    protected PlatformType getActivePlatform() {
+        return DriverContext.getActivePlatform();
     }
 
     protected void navigateToRole(ApplicationRole role) {
@@ -82,15 +79,7 @@ public abstract class BaseTest {
         getDriver().get(role.getBaseUrl() + normalizedPath);
     }
 
-    private void configureDriver(WebDriver driver) {
-        int implicitWait = ConfigReader.getInt("implicit.wait.seconds", 0);
-        int pageLoadTimeout = ConfigReader.getInt("page.load.timeout.seconds", 60);
-
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(implicitWait));
-        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(pageLoadTimeout));
-
-        if (!ConfigReader.getBoolean("chrome.headless", false)) {
-            driver.manage().window().maximize();
-        }
+    private String buildThreadLabel(PlatformType platform) {
+        return platform.name() + "-Thread-" + Thread.currentThread().threadId();
     }
 }

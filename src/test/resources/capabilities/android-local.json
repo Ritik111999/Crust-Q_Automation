@@ -1,0 +1,10 @@
+{
+  "platformName": "Android",
+  "appium:automationName": "UiAutomator2",
+  "appium:deviceName": "Android Emulator",
+  "appium:platformVersion": "14",
+  "appium:appPackage": "${mobile.android.app.package}",
+  "appium:appActivity": "${mobile.android.app.activity}",
+  "appium:autoGrantPermissions": true,
+  "appium:noReset": false
+}

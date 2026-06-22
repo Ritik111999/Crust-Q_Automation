@@ -83,7 +83,7 @@ public final class ModuleWiseReportGenerator {
                 currentModule = moduleName;
                 html.append("<h3>").append(QaReportHtmlSupport.escape(moduleName)).append("</h3>");
                 html.append("<table><thead><tr>")
-                        .append("<th>Scenario ID</th><th>Title</th><th>Type</th><th>Status</th>")
+                        .append("<th>Scenario ID</th><th>Title</th><th>Type</th><th>Expected Result</th><th>Status</th>")
                         .append("</tr></thead><tbody>");
             }
 
@@ -91,6 +91,7 @@ public final class ModuleWiseReportGenerator {
             html.append("<tr><td>").append(QaReportHtmlSupport.escape(def.getScenarioId()))
                     .append("</td><td>").append(QaReportHtmlSupport.escape(def.getTitle()))
                     .append("</td><td>").append(QaReportHtmlSupport.escape(def.getType()))
+                    .append("</td><td>").append(QaReportHtmlSupport.escape(def.getExpectedResult()))
                     .append("</td><td class=\"")
                     .append(QaReportHtmlSupport.statusClass(result.getStatus())).append("\">")
                     .append(QaReportHtmlSupport.escape(result.getStatus().toUpperCase()))

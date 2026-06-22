@@ -47,6 +47,16 @@ public final class ScenarioCategoryMapper {
     private static String resolveFunctionalArea(ITestResult result) {
         String className = result.getTestClass().getRealClass().getSimpleName();
 
+        return switch (className) {
+            case "UserPwaLoginTest" -> "User_Login";
+            case "DriverPwaLoginTest" -> "Driver_Login";
+            case "PwaLoginNegativeTest" -> "PWA_Auth_Negative";
+            case "FrameworkSmokeTest" -> "Framework";
+            default -> resolveFunctionalAreaByName(className);
+        };
+    }
+
+    private static String resolveFunctionalAreaByName(String className) {
         if (className.contains("User")) {
             return "User_Module";
         }

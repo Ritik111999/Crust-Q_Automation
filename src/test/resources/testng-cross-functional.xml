@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <!--
-  CI/CD — infrastructure smoke until full project automation is complete.
-  Run: mvn test -Pci
+  CROSS-FUNCTIONAL SUITE (PWA + Mobile in same flow)
+  Run: mvn test -Pcross-functional
+  E2E business flows under com.crustq.tests.cross_functional will be added in Step 5.
 -->
-<suite name="Crust and Q CI Suite"
-       parallel="methods"
-       thread-count="3"
-       data-provider-thread-count="1"
+<suite name="Crust and Q Cross-Functional Suite"
+       parallel="false"
        verbose="1">
 
     <listeners>
         <listener class-name="com.crustq.listeners.TestListener"/>
     </listeners>
 
-    <test name="Infrastructure Smoke CI">
+    <test name="Cross-Functional Bootstrap">
         <classes>
             <class name="com.crustq.tests.infrastructure.FrameworkSmokeTest"/>
         </classes>

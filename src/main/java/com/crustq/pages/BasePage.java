@@ -2,6 +2,7 @@ package com.crustq.pages;
 
 import com.crustq.config.ApplicationRole;
 import com.crustq.config.ConfigReader;
+import com.crustq.utils.WebActionsUtil;
 import com.crustq.utils.WebElementUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -15,10 +16,12 @@ public abstract class BasePage {
 
     protected final WebDriver driver;
     protected final WebElementUtils utils;
+    protected final WebActionsUtil webActions;
 
     protected BasePage(WebDriver driver) {
         this.driver = driver;
         this.utils = new WebElementUtils(driver);
+        this.webActions = new WebActionsUtil(driver);
     }
 
     protected WebElement waitForVisible(By locator) {

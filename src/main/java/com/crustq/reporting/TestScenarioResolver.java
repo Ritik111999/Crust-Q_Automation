@@ -1,7 +1,6 @@
 package com.crustq.reporting;
 
 import com.crustq.config.ApplicationRole;
-import com.crustq.config.ConfigReader;
 import org.testng.ITestResult;
 
 import java.util.Arrays;
@@ -80,14 +79,24 @@ public final class TestScenarioResolver {
     }
 
     private static ModuleInfo resolveModule(String className) {
-        if (className.contains("User") || className.startsWith("Customer")) {
-            return moduleFromRole(ApplicationRole.USER);
-        }
+        return switch (className) {
+            case "UserPwaLoginTest" -> moduleFromRole(ApplicationRole.USER);
+            case "DriverPwaLoginTest" -> moduleFromRole(ApplicationRole.DRIVER);
+            case "PwaLoginNegativeTest" -> new ModuleInfo("01", "01 - PWA Auth (User & Driver)", "PWA");
+            case "FrameworkSmokeTest" -> new ModuleInfo("00", "00 - Framework", "FW");
+            default -> resolveModuleByName(className);
+        };
+    }
+
+    private static ModuleInfo resolveModuleByName(String className) {
         if (className.contains("Admin") || className.contains("Dispatcher")) {
             return moduleFromRole(ApplicationRole.ADMIN);
         }
-        if (className.contains("Driver") || className.contains("Delivery")) {
+        if (className.contains("Driver")) {
             return moduleFromRole(ApplicationRole.DRIVER);
+        }
+        if (className.contains("User")) {
+            return moduleFromRole(ApplicationRole.USER);
         }
         return new ModuleInfo("00", "00 - Framework", "FW");
     }
@@ -98,14 +107,21 @@ public final class TestScenarioResolver {
 
     private static String buildFallbackScenarioId(String prefix, String methodName, Object[] parameters) {
         if (parameters != null && parameters.length > 0 && parameters[0] != null) {
-            String suffix = parameters[0].toString()
-                    .replaceAll("[^A-Za-z0-9]+", "")
-                    .toUpperCase(Locale.US);
-            if (!suffix.isBlank()) {
-                return prefix + "-AUTO-" + suffix.substring(0, Math.min(8, suffix.length()));
-            }
+            return prefix + "-" + parameters[0].toString().toUpperCase(Locale.US);
         }
-        return prefix + "-AUTO-" + methodName.substring(Math.max(0, methodName.length() - 8)).toUpperCase(Locale.US);
+        if (methodName.contains("rememberMe")) {
+            return prefix + "-REMEMBER-ME";
+        }
+        if (methodName.contains("redirectsToDashboard")) {
+            return prefix + "-LOGIN-DASHBOARD";
+        }
+        if (methodName.contains("redirectsToDriverHome")) {
+            return prefix + "-LOGIN-DRIVER-HOME";
+        }
+        if (methodName.contains("verifyFrameworkWiring")) {
+            return prefix + "-SMOKE";
+        }
+        return prefix + "-AUTO";
     }
 
     private record ModuleInfo(String code, String name, String prefix) {

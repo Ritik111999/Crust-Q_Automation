@@ -1,11 +1,11 @@
-package com.crustq.pages.adminmodule;
+package com.crustq.pages.pwa.admin;
 
 import com.crustq.config.ApplicationRole;
 import com.crustq.pages.BasePage;
 import org.openqa.selenium.WebDriver;
 
 /**
- * Base Page Object for Admin (Dispatcher) role screens.
+ * Base Page Object for Admin (Dispatcher) PWA screens.
  */
 public abstract class AdminBasePage extends BasePage {
 

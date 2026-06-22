@@ -1,0 +1,10 @@
+{
+  "platformName": "iOS",
+  "appium:automationName": "XCUITest",
+  "appium:deviceName": "iPhone Simulator",
+  "appium:platformVersion": "17.0",
+  "appium:bundleId": "${mobile.ios.bundle.id}",
+  "appium:udid": "${mobile.ios.udid}",
+  "appium:autoAcceptAlerts": true,
+  "appium:noReset": false
+}

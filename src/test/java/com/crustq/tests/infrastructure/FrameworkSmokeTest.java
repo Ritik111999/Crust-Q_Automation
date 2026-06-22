@@ -1,4 +1,4 @@
-package com.crustq.tests;
+package com.crustq.tests.infrastructure;
 
 import com.crustq.base.BaseTest;
 import com.crustq.config.ConfigReader;

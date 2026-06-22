@@ -87,6 +87,39 @@ public final class ConfigReader {
     }
 
     /**
+     * Returns the active platform from {@code platform.active} (default: pwa).
+     */
+    public static PlatformType getActivePlatform() {
+        return PlatformType.active();
+    }
+
+    /**
+     * Classpath-relative capabilities JSON for the given mobile platform.
+     */
+    public static String getMobileCapabilitiesFile(PlatformType platform) {
+        if (platform == PlatformType.ANDROID) {
+            return get("mobile.android.capabilities.file", "capabilities/android-local.json");
+        }
+        if (platform == PlatformType.IOS) {
+            return get("mobile.ios.capabilities.file", "capabilities/ios-local.json");
+        }
+        throw new IllegalArgumentException("Capabilities file is only defined for mobile platforms: " + platform);
+    }
+
+    public static String getAppiumServerUrl() {
+        String host = get("appium.server.host", "127.0.0.1");
+        int port = getInt("appium.server.port", 4723);
+        String basePath = get("appium.server.base.path", "/");
+        if (!basePath.startsWith("/")) {
+            basePath = "/" + basePath;
+        }
+        if (basePath.length() > 1 && basePath.endsWith("/")) {
+            basePath = basePath.substring(0, basePath.length() - 1);
+        }
+        return "http://" + host + ":" + port + basePath;
+    }
+
+    /**
      * Builds a 2D Object array for TestNG @DataProvider from indexed property groups.
      * Example prefix "crustq.user.login.negative" reads keys like .username.1, .password.1, etc.
      */

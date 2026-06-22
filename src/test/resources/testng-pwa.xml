@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <!--
-  Default suite — PWA feature tests + infrastructure smoke.
-  For CI-only runs use: mvn test -Pci
+  PWA-ONLY SUITE (Selenium / Chrome)
+  Run: mvn test
+  Run: mvn test -Ppwa
 -->
 <suite name="Crust and Q PWA Suite"
        parallel="methods"
@@ -19,12 +20,6 @@
             <class name="com.crustq.tests.pwa_only.user.UserPwaLoginTest"/>
             <class name="com.crustq.tests.pwa_only.driver.DriverPwaLoginTest"/>
             <class name="com.crustq.tests.pwa_only.auth.PwaLoginNegativeTest"/>
-        </classes>
-    </test>
-
-    <test name="Infrastructure Smoke">
-        <classes>
-            <class name="com.crustq.tests.infrastructure.FrameworkSmokeTest"/>
         </classes>
     </test>
 </suite>
