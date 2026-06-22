@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extentreports>
+    <configuration>
+        <theme>standard</theme>
+        <encoding>UTF-8</encoding>
+        <protocol>https</protocol>
+        <timelineEnabled>true</timelineEnabled>
+        <offlineMode>true</offlineMode>
+
+        <documentTitle>Crust &amp; Q PWA — Module Wise QA Report</documentTitle>
+        <reportName>Crust &amp; Q PWA — Test Execution Report</reportName>
+        <timeStampFormat>MMM dd, yyyy HH:mm:ss a</timeStampFormat>
+    </configuration>
+
+    <views>
+        <view type="dashboard">
+            <viewName>Dashboard</viewName>
+            <chart>
+                <onClick>true</onClick>
+                <enable>true</enable>
+                <title>Execution Overview</title>
+            </chart>
+        </view>
+
+        <view type="test">
+            <viewName>Tests</viewName>
+            <chart>
+                <onClick>true</onClick>
+                <enable>true</enable>
+                <title>Test Distribution</title>
+            </chart>
+        </view>
+
+        <view type="category">
+            <viewName>Categories</viewName>
+            <chart>
+                <onClick>true</onClick>
+                <enable>true</enable>
+                <title>Role Modules</title>
+            </chart>
+        </view>
+
+        <view type="device">
+            <viewName>Devices</viewName>
+            <chart>
+                <onClick>true</onClick>
+                <enable>true</enable>
+                <title>Browser Breakdown</title>
+            </chart>
+        </view>
+
+        <view type="exception">
+            <viewName>Exceptions</viewName>
+            <chart>
+                <onClick>true</onClick>
+                <enable>true</enable>
+                <title>Exception Analysis</title>
+            </chart>
+        </view>
+    </views>
+</extentreports>

@@ -1,13 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="Crust and Q PWA Suite" parallel="methods" thread-count="3" verbose="1">
+<!--
+  PARALLEL CHROME EXECUTION
+  - parallel="methods"             -> each @Test runs in its own thread
+  - thread-count="6"               -> max concurrent Chrome instances
+  - data-provider-thread-count="3" -> caps parallel DataProvider invocations
+
+  Role modules (future):
+    User   — customer ordering flows
+    Admin  — dispatcher dashboard flows
+    Driver — delivery agent flows
+-->
+<suite name="Crust and Q PWA Suite"
+       parallel="methods"
+       thread-count="6"
+       data-provider-thread-count="3"
+       verbose="1">
+
     <listeners>
-        <listener class-name="listeners.ExtentTestNGListener"/>
+        <listener class-name="com.crustq.listeners.TestListener"/>
     </listeners>
 
-    <test name="Placeholder Tests">
+    <test name="Framework Smoke">
         <classes>
-            <class name="tests.FrameworkSmokeTest"/>
+            <class name="com.crustq.tests.FrameworkSmokeTest"/>
         </classes>
     </test>
 </suite>
