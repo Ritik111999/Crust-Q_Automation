@@ -1,5 +1,6 @@
 package com.crustq.tests.infrastructure;
 
+import com.crustq.utils.RealWorldTestData;
 import com.crustq.utils.TestDataGenerator;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -34,5 +35,31 @@ public class UtilsWiringTest {
         String referenceTwo = TestDataGenerator.uniqueReference("dispatch");
         Assert.assertNotEquals(referenceOne, referenceTwo);
         Assert.assertTrue(referenceOne.startsWith("DISPATCH-"));
+    }
+
+    @Test(description = "Utils | RealWorldTestData loads multiple USA datasets")
+    public void verifyRealWorldTestDataCatalog() {
+        RealWorldTestData.ProfileUser user = RealWorldTestData.defaultProfileUser();
+        Assert.assertFalse(user.email().isBlank());
+        Assert.assertFalse(user.firstName().isBlank());
+        Assert.assertEquals(user.loyaltyTier(), "Pizza Cutter");
+
+        Assert.assertTrue(RealWorldTestData.addressIds().size() >= 4,
+                "Expected at least 4 real-world USA addresses");
+        RealWorldTestData.UsAddress orlando = RealWorldTestData.address(1);
+        Assert.assertEquals(orlando.city(), "Orlando");
+        Assert.assertFalse(orlando.streetWithUniqueUnit().equals(orlando.street()));
+
+        Assert.assertTrue(RealWorldTestData.paymentCardIds().size() >= 3,
+                "Expected at least 3 NMI sandbox cards");
+        Assert.assertEquals(RealWorldTestData.defaultPaymentCard().brand(), "Visa");
+
+        Assert.assertEquals(RealWorldTestData.allLoyaltyTiers().size(), 5);
+        Assert.assertEquals(RealWorldTestData.invalidPaymentZip(), "12");
+        Assert.assertEquals(RealWorldTestData.invalidPhone(), "123");
+        Assert.assertEquals(RealWorldTestData.invalidAddressZip(), "ABCDE");
+
+        Assert.assertEquals(RealWorldTestData.nextAddress().id(),
+                RealWorldTestData.address(1).id());
     }
 }
