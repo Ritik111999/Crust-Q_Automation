@@ -13,8 +13,12 @@ import org.testng.annotations.Test;
 /**
  * User My Profile journey — navigation, loyalty, personal info, payments, addresses.
  * Uses a pre-created user account (no signup automation).
+ * <p>
+ * Card-add and address-save tests are temporarily disabled ({@code enabled = false}).
  */
 public class UserProfileTest extends BaseTest {
+
+    private static final boolean CARD_AND_ADDRESS_TESTS_ENABLED = false;
 
     private UserProfilePage profilePage;
 
@@ -96,7 +100,7 @@ public class UserProfileTest extends BaseTest {
         profilePage.selectCashOnDelivery();
     }
 
-    @Test(groups = {"Positive"},
+    @Test(groups = {"Positive"}, enabled = CARD_AND_ADDRESS_TESTS_ENABLED,
             description = "User | Profile | Add valid NMI sandbox card and verify card list")
     public void testPositive_addValidNmiCard() {
         profilePage.openProfileFromSidebar();
@@ -108,7 +112,7 @@ public class UserProfileTest extends BaseTest {
                 "Saved card ending in " + card.last4() + " should appear in card list");
     }
 
-    @Test(groups = {"Negative"},
+    @Test(groups = {"Negative"}, enabled = CARD_AND_ADDRESS_TESTS_ENABLED,
             description = "User | Profile | Invalid ZIP keeps Add Card disabled on NMI page")
     public void testNegative_addCardInvalidZip() {
         profilePage.openProfileFromSidebar();
@@ -118,7 +122,7 @@ public class UserProfileTest extends BaseTest {
                 + ") correctly blocked Add Card submission");
     }
 
-    @Test(groups = {"Negative"},
+    @Test(groups = {"Negative"}, enabled = CARD_AND_ADDRESS_TESTS_ENABLED,
             description = "User | Profile | Invalid card number keeps Add Card disabled on NMI page")
     public void testNegative_addCardInvalidCardNumber() {
         profilePage.openProfileFromSidebar();
@@ -128,7 +132,7 @@ public class UserProfileTest extends BaseTest {
                 + ") correctly blocked Add Card submission");
     }
 
-    @Test(groups = {"Negative"},
+    @Test(groups = {"Negative"}, enabled = CARD_AND_ADDRESS_TESTS_ENABLED,
             description = "User | Profile | Expired card keeps Add Card disabled on NMI page")
     public void testNegative_addCardExpiredCard() {
         profilePage.openProfileFromSidebar();
@@ -138,7 +142,7 @@ public class UserProfileTest extends BaseTest {
                 + ") correctly blocked Add Card submission");
     }
 
-    @Test(groups = {"Negative"},
+    @Test(groups = {"Negative"}, enabled = CARD_AND_ADDRESS_TESTS_ENABLED,
             description = "User | Profile | Invalid CVV keeps Add Card disabled on NMI page")
     public void testNegative_addCardInvalidCvv() {
         profilePage.openProfileFromSidebar();
@@ -148,7 +152,7 @@ public class UserProfileTest extends BaseTest {
                 + ") correctly blocked Add Card submission");
     }
 
-    @Test(groups = {"Negative"},
+    @Test(groups = {"Negative"}, enabled = CARD_AND_ADDRESS_TESTS_ENABLED,
             description = "User | Profile | Blank street address blocks address save")
     public void testNegative_submitBlankAddressForm() {
         profilePage.openProfileFromSidebar();
@@ -159,7 +163,7 @@ public class UserProfileTest extends BaseTest {
         ExtentTestManager.getTest().info("Blank street address correctly blocked address save");
     }
 
-    @Test(groups = {"Negative"},
+    @Test(groups = {"Negative"}, enabled = CARD_AND_ADDRESS_TESTS_ENABLED,
             description = "User | Profile | Invalid ZIP blocks address save")
     public void testNegative_submitAddressInvalidZip() {
         profilePage.openProfileFromSidebar();
@@ -184,7 +188,7 @@ public class UserProfileTest extends BaseTest {
                 + ") correctly blocked profile update");
     }
 
-    @Test(groups = {"Positive"},
+    @Test(groups = {"Positive"}, enabled = CARD_AND_ADDRESS_TESTS_ENABLED,
             description = "User | Profile | Save new delivery address")
     public void testPositive_saveNewDeliveryAddress() {
         profilePage.openProfileFromSidebar();

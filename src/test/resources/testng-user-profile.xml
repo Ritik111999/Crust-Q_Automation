@@ -2,9 +2,14 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <!--
   User Profile suite — sequential execution (shared login account).
+  Card-add and address-save tests are disabled in UserProfileTest (see CARD_AND_ADDRESS_TESTS_ENABLED).
   Run: mvn test -Ppwa -DsuiteXmlFile=src/test/resources/testng-user-profile.xml
 -->
-<suite name="Crust and Q User Profile Suite" parallel="false" verbose="1">
+<suite name="Crust and Q User Profile Suite"
+       parallel="methods"
+       thread-count="6"
+       data-provider-thread-count="1"
+       verbose="1">
 
     <listeners>
         <listener class-name="com.crustq.listeners.TestListener"/>
