@@ -89,6 +89,35 @@ public final class RealWorldTestData {
     public record LoyaltyTier(int id, String name, int pointsPerDollar) {
     }
 
+    public record OrderMenuItem(String name, String price, String addButtonLabel) {
+    }
+
+    public static OrderMenuItem defaultOrderMenuItem() {
+        ensureInitialized();
+        return new OrderMenuItem(
+                get("testdata.order.menu.item.name", "Chicken Sate"),
+                get("testdata.order.menu.item.price", "4.50"),
+                get("testdata.order.menu.item.add.button.label", "Add to Order")
+        );
+    }
+
+    public static String orderSavedAddressShortName() {
+        return get("testdata.order.saved.address.short.name", "Orlando");
+    }
+
+    public static String orderPaymentCardBrand() {
+        return get("testdata.order.payment.card.brand", "Mastercard");
+    }
+
+    public static String orderDeliveryInstructionsSample() {
+        return get("testdata.order.delivery.instructions.sample",
+                "Ring doorbell and leave with front desk attendant.");
+    }
+
+    public static int orderSpecialInstructionsMaxLength() {
+        return Integer.parseInt(get("testdata.order.special.instructions.max.length", "150"));
+    }
+
     public static ProfileUser defaultProfileUser() {
         return profileUser(defaultId("testdata.default.profile.user.id", 1));
     }

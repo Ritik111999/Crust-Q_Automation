@@ -19,6 +19,7 @@
         <classes>
             <class name="com.crustq.tests.pwa_only.user.UserPwaLoginTest"/>
             <class name="com.crustq.tests.pwa_only.user.UserProfileTest"/>
+            <class name="com.crustq.tests.pwa_only.user.UserOrderCheckoutTest"/>
             <class name="com.crustq.tests.pwa_only.driver.DriverPwaLoginTest"/>
             <class name="com.crustq.tests.pwa_only.auth.PwaLoginNegativeTest"/>
         </classes>

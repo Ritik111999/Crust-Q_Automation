@@ -73,11 +73,11 @@ public final class TestScenarioCatalog {
                 "USER-LOGIN-001",
                 "Valid user credentials redirect to customer dashboard",
                 "Positive",
-                "PWA auth page is reachable; valid user account karlu@knoxweb.us exists",
+                "PWA auth page is reachable; valid user account carlu@knoxweb.us exists",
                 steps(
                         "Open " + PWA_AUTH_URL,
                         "Enable Flutter accessibility and wait for Sign In form",
-                        "Enter email: karlu@knoxweb.us",
+                        "Enter email: carlu@knoxweb.us",
                         "Enter password: sR@123456 (from config)",
                         "Click Sign In",
                         "Wait for URL to contain /dashboard"
@@ -137,7 +137,7 @@ public final class TestScenarioCatalog {
                 "PWA auth page is reachable at " + PWA_AUTH_URL,
                 steps(
                         "Open " + PWA_AUTH_URL,
-                        "Enter email: karlu@knoxweb.us",
+                        "Enter email: carlu@knoxweb.us",
                         "Enter password: Wrong@123456 (incorrect password)",
                         "Click Sign In",
                         "Verify URL still contains /auth",
@@ -175,7 +175,7 @@ public final class TestScenarioCatalog {
                 "PWA auth page is reachable at " + PWA_AUTH_URL,
                 steps(
                         "Open " + PWA_AUTH_URL,
-                        "Enter email: karlu@knoxweb.us",
+                        "Enter email: carlu@knoxweb.us",
                         "Leave password field empty",
                         "Click Sign In",
                         "Verify URL still contains /auth",
@@ -213,7 +213,7 @@ public final class TestScenarioCatalog {
                 "PWA auth page is reachable at " + PWA_AUTH_URL,
                 steps(
                         "Open " + PWA_AUTH_URL,
-                        "Enter email: karlu@knoxweb.us",
+                        "Enter email: carlu@knoxweb.us",
                         "Enter password: weakpass (does not meet complexity rules)",
                         "Click Sign In",
                         "Verify validation hint is displayed: Include a capital letter, number and symbol in your password",
